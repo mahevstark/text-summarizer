@@ -7,7 +7,7 @@ import eyeClose from "@/public/images/icons/eye-closed.svg";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/actions/auth";
-import { useNotificationStore } from "../store/notificationStore";
+import { useNotificationStore, NotificationTypes } from "../store/notificationStore";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,20 +29,20 @@ export default function LoginPage() {
       const result = await login({ email, password });
       
       if ('error' in result) {
-        showNotification(result.error.message, 'error', 'error');
+        showNotification(NotificationTypes.error, 'Error', result.error.message);
         setError({
           password: result.error.field === "password",
           email: result.error.field === "email"
         });
       } else {
-        showNotification('You will be redirected shortly', 'success', 'success');
+        showNotification(NotificationTypes.success, 'success', 'You will be redirected shortly');
         // Redirect after successful login
         setTimeout(() => {
           router.replace("/dashboard");
         }, 1500);
       }
     } catch (err) {
-      showNotification('An unexpected error occurred. Please try again.', 'error', 'error');
+      showNotification(NotificationTypes.error, 'Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -72,7 +72,7 @@ export default function DashboardPage() {
             charCount={charCount}
             copyDisabled={copyDisabled}
             summary={summary}
-            showNotification={(message: string, title:string, type: NotificationType) => showNotification(message, title, type)}
+            showNotification={(type: NotificationType, title:string, msg?: string) => showNotification(type, title, msg)}
           />
         </div>
       </div>

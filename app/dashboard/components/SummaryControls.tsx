@@ -3,14 +3,14 @@
 import Image from "next/image";
 import copyIcon from "@/public/images/icons/copy.svg";
 import copyDisabledIcon from "@/public/images/icons/copyDisabled.svg";
-import { NotificationType } from "@/app/store/notificationStore";
+import { NotificationType, NotificationTypes } from "@/app/store/notificationStore";
 
 interface SummaryControlsProps {
   wordCount: number;
   charCount: number;
   copyDisabled: boolean;
   summary: string;
-  showNotification: (message: string, title: string, type: NotificationType) => void;
+  showNotification: (type: NotificationType, title: string, msg?: string) => void;
 }
 
 export default function SummaryControls({ 
@@ -45,7 +45,7 @@ export default function SummaryControls({
         <button 
           onClick={() => {
             navigator.clipboard.writeText(summary);
-            showNotification('Copied to clipboard', 'success', 'success');
+            showNotification(NotificationTypes.success, 'Copied to clipboard');
           }}
           disabled={copyDisabled}
           className={`flex justify-center items-center gap-[2px] px-[10px] py-[6px] rounded-[10px] font-inter text-[14px] font-medium leading-[20px] tracking-[-0.07px] text-center ${

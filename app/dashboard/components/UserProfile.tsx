@@ -4,7 +4,7 @@ import Image from 'next/image';
 import logoutIcon from '@/public/images/icons/logout.svg';
 import { logout } from '@/app/actions/auth';
 import { useRouter } from 'next/navigation';
-import { useNotificationStore } from '@/app/store/notificationStore';
+import { useNotificationStore, NotificationTypes } from '@/app/store/notificationStore';
 
 export default function UserProfile() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function UserProfile() {
 
   const handleLogout = async () => {
     await logout();
-    showNotification('You have been successfully logged out', 'success', 'success');
+    showNotification(NotificationTypes.success, 'Success', 'You have been successfully logged out');
     router.replace('/login');
   };
 
