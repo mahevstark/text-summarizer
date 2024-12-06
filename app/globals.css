@@ -25,3 +25,22 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(11, 12, 14);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
