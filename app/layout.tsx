@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Public_Sans } from 'next/font/google'
-import Notification from './components/Notification'
+import Notification from './shared-components/Notification'
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",

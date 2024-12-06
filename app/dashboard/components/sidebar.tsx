@@ -1,8 +1,8 @@
 'use client';
 
-import UserProfile from './UserProfile';
-import NewTextButton from './NewTextButton';
-import Navigation from './Navigation';
+import UserProfile from '@/app/shared-components/UserProfile';
+import NewTextButton from '@/app/shared-components/NewTextButton';
+import Navigation from '@/app/shared-components/Navigation';
 
 export default function Sidebar() {
   return (

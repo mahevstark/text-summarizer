@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Sidebar from "./components/sidebar";
-import Header from "./components/Header";
-import TextInput from "./components/TextInput";
-import TextControls from "./components/TextControls";
-import SummaryDisplay from "./components/SummaryDisplay";
-import SummaryControls from "./components/SummaryControls";
+import Sidebar from "@/app/dashboard/components/sidebar";
+import Header from "@/app/shared-components/Header";
+import TextInput from "@/app/shared-components/TextInput";
+import TextControls from "@/app/shared-components/TextControls";
+import SummaryDisplay from "@/app/shared-components/SummaryDisplay";
+import SummaryControls from "@/app/shared-components/SummaryControls";
 import { useNotificationStore, NotificationType } from "@/app/store/notificationStore";
 export default function DashboardPage() {
   const [text, setText] = useState("");
@@ -44,7 +44,10 @@ export default function DashboardPage() {
         <Sidebar />
         
         <div className="flex flex-col py-10 px-[42px] bg-white rounded-r-ud-radius w-full">
-          <Header />
+          <Header
+            title="Text Summarizer"
+            description="Summarize and manage texts with ease"
+          />
 
           <div className="mt-5 bg-box-bg rounded-ud-radius py-4 border border-box-bg">
             <TextInput 
