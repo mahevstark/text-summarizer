@@ -7,7 +7,7 @@ import TextInput from "./components/TextInput";
 import TextControls from "./components/TextControls";
 import SummaryDisplay from "./components/SummaryDisplay";
 import SummaryControls from "./components/SummaryControls";
-
+import { useNotificationStore, NotificationType } from "@/app/store/notificationStore";
 export default function DashboardPage() {
   const [text, setText] = useState("");
   const [inputMode, setInputMode] = useState(false);
@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const [charCount, setCharCount] = useState(0);
   const [summarizing, setSummarizing] = useState(false);
   const [summary, setSummary] = useState("");
-
+  const showNotification = useNotificationStore(state => state.showNotification);
   useEffect(() => {
     const words = text.trim().split(/\s+/).filter(word => word.length > 0);
     setWordCount(words.length);
@@ -72,6 +72,7 @@ export default function DashboardPage() {
             charCount={charCount}
             copyDisabled={copyDisabled}
             summary={summary}
+            showNotification={(message: string, title:string, type: NotificationType) => showNotification(message, title, type)}
           />
         </div>
       </div>

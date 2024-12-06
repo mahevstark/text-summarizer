@@ -4,12 +4,10 @@ import Image from "next/image";
 import logo from "@/public/images/logo-60px.svg";
 import eyeOpen from "@/public/images/icons/eye-open.svg";
 import eyeClose from "@/public/images/icons/eye-closed.svg";
-import redWarning from "@/public/images/icons/red-warning.svg";
-import cross from "@/public/images/icons/cross.svg";
-import check from "@/public/images/icons/check.svg";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/actions/auth";
+import { useNotificationStore } from "../store/notificationStore";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,13 +16,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
-    isError: false,
-    title: "",
-    message: "",
     password: false,
     email: false
   });
-  const [success, setSuccess] = useState(false);
+  const showNotification = useNotificationStore(state => state.showNotification);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,28 +29,20 @@ export default function LoginPage() {
       const result = await login({ email, password });
       
       if ('error' in result) {
+        showNotification(result.error.message, 'error', 'error');
         setError({
-          isError: true,
-          title: result.error.title || "Authentication Error",
-          message: result.error.message,
           password: result.error.field === "password",
           email: result.error.field === "email"
         });
       } else {
-        setSuccess(true);
+        showNotification('You will be redirected shortly', 'success', 'success');
         // Redirect after successful login
         setTimeout(() => {
-          router.push("/dashboard"); // or wherever you want to redirect
+          router.replace("/dashboard");
         }, 1500);
       }
     } catch (err) {
-      setError({
-        isError: true,
-        title: "Login Failed",
-        message: "An unexpected error occurred. Please try again.",
-        password: false,
-        email: false
-      });
+      showNotification('An unexpected error occurred. Please try again.', 'error', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -63,55 +50,6 @@ export default function LoginPage() {
 
   return (
     <div className="bg-white rounded-lg max-w-login-container p-10 flex flex-col items-center border border-bordercolor">
-        {success && (
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 flex w-notification-width p-4 items-start gap-3 rounded-xl border border-success-border bg-success-bg shadow-notification">
-            <Image
-              src={check}
-              alt="Success"
-              width={20}
-              height={20}
-              style={{
-                marginTop: "2px"
-              }}
-            />
-            <div className="flex flex-col relative">
-              <span className="text-textbase font-inter text-base font-medium leading-6 tracking-title">Login Successful</span>
-              <span className="text-textsecondary font-inter text-sm font-normal leading-5 tracking-notification mt-1">You will be redirected shortly</span>
-            </div>
-          </div>
-        )}
-
-        {error.isError && (
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 flex w-notification-width p-4 items-start gap-3 rounded-xl border border-error-border bg-error-bg shadow-notification">
-          <Image
-            src={redWarning}
-            alt="Warning"
-            width={20}
-            height={20}
-            style={{
-              marginTop: "2px"
-            }}
-          />
-          <div className="flex flex-col relative flex-1">
-            <span className="text-textbase font-inter text-base font-medium leading-6 tracking-title">{error.title}</span>
-            <span className="text-textsecondary font-inter text-sm font-normal leading-5 tracking-notification mt-1">{error.message}</span>
-          </div>
-          <Image
-            src={cross}
-            alt="Close"
-            width={20}
-            height={20}
-            className="cursor-pointer hover:opacity-80 transition-opacity ml-auto"
-            onClick={() => setError({
-              isError: false,
-              title: "",
-              message: "",
-              password: false,
-              email: false
-            })}
-          />
-        </div>
-      )}
       <Image
         src={logo}
         alt="UD - Logo" 
@@ -121,8 +59,6 @@ export default function LoginPage() {
       <h2 className="text-xl font-medium text-textbase font-inter tracking-heading mt-2">Log in to Undetectable AI</h2>
       <p className="text-base text-textsecondary font-inter mt-2 tracking-subheading leading-6">Enter your username and password to continue</p>
       
-      
-
       <form onSubmit={handleSubmit} className="w-full space-y-4 mt-6">
         <div>
           <input

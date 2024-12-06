@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Public_Sans } from 'next/font/google'
-
+import Notification from './components/Notification'
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -39,6 +39,7 @@ export default function RootLayout({
       <body
         className={`${publicSans.className} ${inter.className} antialiased`}
       >
+        <Notification />
         {children}
       </body>
     </html>
