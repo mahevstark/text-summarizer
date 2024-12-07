@@ -122,7 +122,7 @@ export async function checkAuth() {
     });
 
     return user;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

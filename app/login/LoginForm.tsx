@@ -41,7 +41,8 @@ export default function LoginPage() {
           router.replace("/dashboard");
         }, 1500);
       }
-    } catch (err) {
+    } catch {
+
       showNotification(NotificationTypes.error, 'Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);

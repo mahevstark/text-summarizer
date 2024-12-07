@@ -139,26 +139,24 @@ export async function getSummaries({
       throw new Error('Request aborted')
     }
 
-    const finalC = {
-      where,
-      select: {
-        id: true,
-        userText: true,
-        summary: true,
-        wordCount: true,
-        characterCount: true,
-        createdAt: true
-      },
-      orderBy: {
-        createdAt: 'desc'
-      },
-      skip: (page - 1) * limit,
-      take: limit
-    } as any
 
-    console.log("finalC", finalC);
     // Get paginated results
-    const summaries = await prisma.summary.findMany(finalC)
+    const summaries = await prisma.summary.findMany({
+        where,
+        select: {
+          id: true,
+          userText: true,
+          summary: true,
+          wordCount: true,
+          characterCount: true,
+          createdAt: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip: (page - 1) * limit,
+        take: limit
+      })
 
     // Clear current request
     currentRequest = null

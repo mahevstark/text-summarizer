@@ -20,7 +20,7 @@ export default function Dashboard() {
     summaryWordCount, summaryCharCount,
     inputMode, setInputMode,
     summarizing, setSummarizing,
-    error, setError,
+    setError,
     reset 
   } = useSummarizerStore();
 
