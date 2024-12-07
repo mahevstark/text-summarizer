@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import HistoryItem from "./components/HistoryItem";
 import Pagination from "./components/Pagination";
 import Header from "../components/Header";
-import { FilterPeriod, getSummaries, Summaries } from "./actions/get-summary";
+import { getSummaries } from "./actions/get-summary";
 import { NotificationTypes, useNotificationStore } from "@/app/store/notificationStore";
 import { deleteSummary } from "./actions/delete-summary";
 import Link from "next/link";
