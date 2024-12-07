@@ -1,60 +1,150 @@
 "use client";
 import Sidebar from "@/app/dashboard/components/sidebar";
 import FilterHeader from "./components/FilterHeader";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import HistoryItem from "./components/HistoryItem";
 import Pagination from "./components/Pagination";
 import Header from "../components/Header";
+import { FilterPeriod, getSummaries, Summaries } from "./actions/get-summary";
+import { NotificationTypes, useNotificationStore } from "@/app/store/notificationStore";
+import { deleteSummary } from "./actions/delete-summary";
+import Link from "next/link";
+import { format } from "date-fns";
+import { useSummaryStore } from './store/summary-store'
+import { useRouter } from "next/navigation";
 
 export default function HistoryPage() {
-    const [selectedDate, setSelectedDate] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedPage, setSelectedPage] = useState(1);
+    const router = useRouter()
+    const { 
+        selectedDate, setSelectedDate,
+        searchQuery, setSearchQuery,
+        selectedPage, setSelectedPage,
+        summaries, total, isLoading,
+        setSummaries, setIsLoading,
+        setEditingSummary, removeSummary
+    } = useSummaryStore()
+    
+    const showNotification = useNotificationStore(state => state.showNotification)
+    const [menuIndex, setMenuIndex] = useState<number>(-1)
 
-    // Dummy data for demonstration
-    const [data, setData] = useState([
-        {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            date: "2024-01-15",
-            wordCount: 19,
-            characterCount: 123,
-            menuOpen: false
-        },
-        {
-            text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            date: "2024-01-14",
-            wordCount: 19,
-            characterCount: 108,
-            menuOpen: false
-        },
-        {
-            text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            date: "2024-01-13",
-            wordCount: 19,
-            characterCount: 107,
-            menuOpen: false
-        },
-        {
-            text: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            date: "2024-01-12",
-            wordCount: 19,
-            characterCount: 110,
-            menuOpen: false
-        },
-        {
-            text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-            date: "2024-01-11",
-            wordCount: 15,
-            characterCount: 98,
-            menuOpen: false
+    const fetchData = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            const result = await getSummaries({ 
+                page: selectedPage, 
+                search: searchQuery, 
+                period: selectedDate 
+            })
+            
+            if(result.error.title !== "") {
+                showNotification(NotificationTypes.error, result.error.title, result.error.message)
+            } else {
+                // await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure state updates
+                setSummaries(result)
+            }
+        } finally {
+            // setIsLoading(false)
         }
-    ]);
+    }, [selectedPage, searchQuery, selectedDate, showNotification, setIsLoading, setSummaries])
 
-    const handleMenuOpen = (index: number) => {
-        setData(prev => prev.map((item, i) => ({
-            ...item,
-            menuOpen: i === index ? !item.menuOpen : false
-        })));
+    useEffect(() => {
+        if(isLoading) {
+            setIsLoading(false)
+        }
+    }, [summaries])
+    // Debounce search query changes
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchData();
+        }, 500); // Wait 500ms after last keystroke before fetching
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, fetchData]);
+
+    // Handle other filter changes immediately
+    useEffect(() => {
+        if (!searchQuery) { // Don't double fetch when searchQuery changes
+            fetchData();
+        }
+    }, [selectedPage, selectedDate, fetchData]);
+
+    const onDelete = async (id: number, index: number) => {
+        setMenuIndex(-1)
+        removeSummary(index)
+        const result = await deleteSummary(id)
+        if(result.success) {
+            showNotification(NotificationTypes.success, 'Summary deleted')
+        } else {
+            showNotification(NotificationTypes.error, result.error.title, result.error.message)
+            // Refresh data to restore the deleted item if deletion failed
+            fetchData()
+        }
+    }
+
+    const handleEdit = (summary: typeof summaries[0]) => {
+        setEditingSummary({
+            id: summary.id,
+            userText: summary.userText,
+            summary: summary.summary
+        })
+        // Navigate to summarizer page
+        router.push('/dashboard')
+    }
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <div className="flex justify-center items-center py-10">
+                    <svg className="animate-spin h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+            );
+        }
+
+        if (summaries.length === 0) {
+            if (searchQuery) {
+                return (
+                    <div className="flex flex-col items-center justify-center py-20">
+                        <h3 className="text-xl font-semibold text-gray-700">No results found</h3>
+                        <p className="mt-2 text-gray-500">Try adjusting your search or filters</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="flex flex-col items-center justify-center py-20">
+                    <h3 className="text-xl font-semibold text-gray-700">No summaries yet</h3>
+                    <p className="mt-2 text-gray-500">Create your first summary to get started</p>
+                    <Link 
+                        href="/dashboard" 
+                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        Create Summary
+                    </Link>
+                </div>
+            );
+        }
+
+        return summaries.map((item, index) => (
+            <HistoryItem
+                key={index}
+                text={item.userText}
+                date={format(new Date(item.createdAt), 'MMMM d, yyyy • h:mm a')}
+                wordCount={item.wordCount}
+                characterCount={item.characterCount}
+                isMenuOpen={menuIndex === index}
+                onMenuToggle={() => setMenuIndex(index)}
+                onCopy={() => {
+                    setMenuIndex(-1)
+                    navigator.clipboard.writeText(item.userText)
+                    showNotification(NotificationTypes.success, 'Copied to clipboard')
+                }}
+                onEdit={() => handleEdit(item)}
+                onDelete={() => onDelete(item.id, index)}
+            />
+        ))
     }
 
     return (
@@ -76,28 +166,20 @@ export default function HistoryPage() {
                     />
 
                     <div className="mt-4 gap-[10px] flex flex-col">
-                        {data.map((item, index) => (
-                            <HistoryItem
-                                key={index}
-                                text={item.text}
-                                date={item.date}
-                                wordCount={item.wordCount}
-                                characterCount={item.characterCount}
-                                isMenuOpen={item.menuOpen}
-                                onMenuToggle={() => handleMenuOpen(index)}
-                                onCopy={() => console.log('Copy', index)}
-                                onEdit={() => console.log('Edit', index)}
-                                onDelete={() => console.log('Delete', index)}
-                            />
-                        ))}
+                        {renderContent()}
                     </div>
 
-                    <Pagination
-                        currentPage={selectedPage}
-                        totalItems={100}
-                        itemsPerPage={5}
-                        onPageChange={setSelectedPage}
-                    />
+                    {summaries.length > 0 && (
+                        <Pagination
+                            currentPage={selectedPage}
+                            totalItems={total || 0}
+                            itemsPerPage={5}
+                            onPageChange={(page:number) => {
+                                console.log("page changed", page);
+                                setSelectedPage(page);
+                            }}
+                        />
+                    )}
                 </div>
             </div>
         </main>
