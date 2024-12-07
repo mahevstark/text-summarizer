@@ -22,17 +22,15 @@ export default function Notification() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-notification-width">
       {type === 'success' ? (
-        <div className="flex w-notification-width p-4 items-start gap-3 rounded-xl border border-success-border bg-success-bg shadow-notification">
+        <div className="flex p-4 items-start gap-3 rounded-xl border border-success-border bg-success-bg shadow-notification">
           <Image
             src={check}
             alt="Success"
             width={20}
             height={20}
-            style={{
-              marginTop: "2px"
-            }}
+            className="mt-0.5 w-[20px] h-[20px]"
           />
           <div className="flex flex-col relative">
             <span className="text-textbase font-inter text-base font-medium leading-6 tracking-title">{title}</span>
@@ -40,15 +38,13 @@ export default function Notification() {
           </div>
         </div>
       ) : (
-        <div className="flex w-notification-width p-4 items-start gap-3 rounded-xl border border-error-border bg-error-bg shadow-notification">
+        <div className="flex p-4 items-start gap-3 rounded-xl border border-error-border bg-error-bg shadow-notification">
           <Image
             src={redWarning}
             alt="Warning" 
             width={20}
             height={20}
-            style={{
-              marginTop: "2px"
-            }}
+            className="mt-0.5 w-[20px] h-[20px]"
           />
           <div className="flex flex-col relative flex-1">
             <span className="text-textbase font-inter text-base font-medium leading-6 tracking-title">{title}</span>
@@ -59,7 +55,7 @@ export default function Notification() {
             alt="Close"
             width={20}
             height={20}
-            className="cursor-pointer hover:opacity-80 transition-opacity ml-auto"
+            className="cursor-pointer hover:opacity-80 transition-opacity ml-auto w-[20px] h-[20px]"
             onClick={hideNotification}
           />
         </div>
