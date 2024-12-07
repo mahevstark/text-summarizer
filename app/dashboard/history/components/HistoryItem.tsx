@@ -31,12 +31,19 @@ export default function HistoryItem({
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node) && isMenuOpen) {
+            // Check if click target is a child of menuRef
+            const isClickInsideMenu = menuRef.current?.contains(event.target as Node);
+            // If click is outside menu and menu is open, close it
+            if (!isClickInsideMenu && isMenuOpen) {
                 onMenuToggle();
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside);
+        // Only add listener if menu is open
+        if (isMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };

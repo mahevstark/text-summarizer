@@ -3,9 +3,11 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import homeIcon from '@/public/images/icons/home.svg';
 import historyIcon from '@/public/images/icons/history.svg';
+import { useSummaryStore } from '../history/store/summary-store';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const { total } = useSummaryStore();
 
   return (
     <nav className="space-y-2 px-3">
@@ -37,7 +39,7 @@ export default function Navigation() {
           height={20}
         />
         <span>History</span>
-        <span className="flex justify-center items-center gap-0 py-0 rounded-badge border border-badge-border bg-badge-bg text-sm px-1">15</span>
+        <span className="flex justify-center items-center gap-0 py-0 rounded-badge border border-badge-border bg-badge-bg text-sm px-1">{total}</span>
       </Link>
     </nav>
   );

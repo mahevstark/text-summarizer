@@ -5,10 +5,11 @@ import Image from 'next/image'
 import CalendarIcon from '@/public/images/icons/calendar.svg'
 import DownArrowIcon from '@/public/images/icons/down-arrow.svg'
 import SearchIcon from '@/public/images/icons/search.svg'
+import { FilterPeriod } from '../actions/get-summary'
 
 interface FilterHeaderProps {
-    selectedDate: string
-    setSelectedDate: (date: string) => void
+    selectedDate: FilterPeriod
+    setSelectedDate: (date: FilterPeriod) => void
     searchQuery: string
     setSearchQuery: (query: string) => void
 }
@@ -45,7 +46,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                         ].map((option, index, array) => (
                             <div
                                 onClick={() => {
-                                    setSelectedDate(option)
+                                    setSelectedDate(option as FilterPeriod)
                                     setDateSelectionOpen(false)
                                 }}
                                 key={option} className={`
