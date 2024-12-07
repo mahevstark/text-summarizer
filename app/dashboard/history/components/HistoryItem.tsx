@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HistoryItemMetadata from './HistoryItemMetadata';
 import HistoryItemMenu from './HistoryItemMenu';
+import HistoryDeleteConfirmation from './HistoryDeleteConfirmation';
 
 interface HistoryItemProps {
     text: string;
@@ -26,6 +27,7 @@ export default function HistoryItem({
     onDelete
 }: HistoryItemProps) {
     const menuRef = useRef<HTMLDivElement>(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -43,8 +45,8 @@ export default function HistoryItem({
     return (
         <div className="flex p-5 items-start gap-[11px] self-stretch rounded-2xl border border-[#DEE0E3] bg-white w-full">
             <div className="flex flex-row items-start justify-between w-full">
-                <div className="flex flex-col">
-                    <span className="overflow-hidden text-[#14151A] text-ellipsis font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] w-full h-[42px]">
+                <div className="flex flex-col flex-1 mr-4">
+                    <span className="overflow-hidden text-[#14151A] text-ellipsis  font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] w-full h-[42px]">
                         {text}
                     </span>
                     <HistoryItemMetadata
@@ -59,7 +61,14 @@ export default function HistoryItem({
                         onToggle={onMenuToggle}
                         onCopy={onCopy}
                         onEdit={onEdit}
-                        onDelete={onDelete}
+                        onDelete={() => setIsDeleteOpen(true)}
+                    />
+                </div>
+                <div>
+                    <HistoryDeleteConfirmation
+                        isOpen={isDeleteOpen}
+                        onClose={() => setIsDeleteOpen(false)}
+                        onConfirm={() => onDelete?.()}
                     />
                 </div>
             </div>

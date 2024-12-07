@@ -19,7 +19,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
 
     return (
         <div className="flex flex-row justify-between items-center mt-5">
-            <div className="flex flex-row relative flex-[0.3]">
+            <div className="flex flex-row relative flex-[0.5]">
                 <button
                     onClick={() => setDateSelectionOpen(!dateSelectionOpen)}
                     className="
@@ -56,7 +56,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                                         border-x-[0.75px] border-b-[0.75px]
                                         ${index === 0 ? 'border-t-[0.75px]' : ''}
                                         border-[#DBDBDB] bg-white
-                                        text-[#131615] font-['Public_Sans'] text-[16px] font-normal leading-[24px]
+                                        text-[#131615] font-public-sans text-base font-normal leading-[24px]
                                         cursor-pointer hover:bg-gray-50
                                     `}>
                                     {option}
