@@ -17,15 +17,15 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
     const [dateSelectionOpen, setDateSelectionOpen] = useState(false)
 
     return (
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-5 gap-3 md:gap-0">
-            <div className="flex flex-row relative w-full md:w-auto md:flex-[0.5]">
+        <div className="flex 2md:flex-row flex-col gap-3 mt-5">
+            <div className="flex flex-row relative w-full">
                 <button
                     onClick={() => setDateSelectionOpen(!dateSelectionOpen)}
                     className="
                         flex justify-center items-center gap-[6px]
                         px-[10px] py-[6px] rounded-[10px] font-inter text-[14px] font-medium leading-[20px] tracking-[-0.07px] text-center
                         border border-[#DEE0E3] bg-white text-[#14151A] shadow-[0px_1px_2px_0px_rgba(20,21,26,0.05)]
-                        w-full md:w-auto
+                        
                     ">
                     <Image src={CalendarIcon} alt="Bars" width={16} height={16} />
                     {selectedDate ? selectedDate : "Last 7 days"}
@@ -33,7 +33,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                 </button>
 
                 {dateSelectionOpen && (
-                    <div className="absolute top-10 left-0 w-full md:w-[200px] bg-white rounded-lg shadow-lg z-10">
+                    <div className="absolute top-10 left-0 w-full bg-white rounded-lg shadow-lg z-10">
                         {[
                             "Today",
                             "Yesterday",
@@ -65,9 +65,9 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                 )}
             </div>
 
-            <div className="flex flex-row items-center gap-[10px] w-full md:w-auto">
+            <div className="flex flex-row items-center gap-[10px] w-full">
                 <div className="
-                    flex px-[8px] py-[6px] items-center gap-0 w-full md:w-auto
+                    flex px-[8px] py-[6px] items-center gap-0 w-full
                     rounded-[10px] border border-[#DEE0E3] bg-white
                 ">
                     <Image
@@ -83,7 +83,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                         placeholder="Search..."
                         className="
                             ml-[6px]
-                            w-full md:w-[400px]
+                            w-full
                             font-inter text-[14px] leading-[20px]
                             placeholder:text-[#0F1324]/60
                             focus:outline-none

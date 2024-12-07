@@ -11,7 +11,7 @@ interface HistoryItemMetadataProps {
 
 export default function HistoryItemMetadata({ date, wordCount, characterCount }: HistoryItemMetadataProps) {
     return (
-        <div className="flex items-center gap-[6px] mt-4">
+        <div className="flex items-center gap-[6px] mt-4 flex-row flex-wrap">
             <div className="flex justify-center items-center gap-1 px-[6px] py-[4px] rounded-[8px] bg-[#E9EAEC] text-[rgba(15,19,36,0.60)] text-center font-inter text-[14px] font-medium leading-[20px] tracking-[-0.07px]">
                 <Image src={CalendarIcon} alt="Calendar" width={16} height={16} />
                 <p>{date}</p>

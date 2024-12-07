@@ -34,26 +34,30 @@ export default function Sidebar() {
         </button>
       )}
       
-      <div className={`
-        fixed md:relative
-        flex-none
-        flex flex-col w-[280px] h-screen bg-textbase text-white
-        rounded-l-ud-radius py-5
-        transition-transform duration-300 ease-in-out
-        ${!isOpen ? '-translate-x-full' : 'translate-x-0'}
-        z-40
-      `}>
-        {isMobile && (
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="absolute bottom-4 right-4 p-2 hover:bg-nav-hover rounded-lg"
-          >
-            <Image src={closeIcon} alt="Close" width={24} height={24} />
-          </button>
-        )}
-        <UserProfile />
-        <NewTextButton />
-        <Navigation />
+      <div className="md:w-[280px] flex-none">
+        <div className={`
+          fixed
+          flex-none
+          h-full
+          min-h-screen
+          flex flex-col w-[280px] h-screen bg-textbase text-white
+          rounded-l-ud-radius py-5
+          transition-transform duration-300 ease-in-out
+          ${!isOpen ? '-translate-x-full' : 'translate-x-0'}
+          z-40
+        `}>
+          {isMobile && (
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="absolute bottom-4 right-4 p-2 hover:bg-nav-hover rounded-lg"
+            >
+              <Image src={closeIcon} alt="Close" width={24} height={24} />
+            </button>
+          )}
+          <UserProfile />
+          <NewTextButton />
+          <Navigation />
+        </div>
       </div>
       
       {isMobile && isOpen && (
@@ -65,4 +69,3 @@ export default function Sidebar() {
     </>
   );
 }
-
