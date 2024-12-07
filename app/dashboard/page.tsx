@@ -8,6 +8,7 @@ import TextControls from "./components/TextControls";
 import SummaryDisplay from "./components/SummaryDisplay";
 import SummaryControls from "./components/SummaryControls";
 import { useNotificationStore, NotificationType } from "@/app/store/notificationStore";
+
 export default function DashboardPage() {
   const [text, setText] = useState("");
   const [inputMode, setInputMode] = useState(false);
@@ -16,6 +17,7 @@ export default function DashboardPage() {
   const [summarizing, setSummarizing] = useState(false);
   const [summary, setSummary] = useState("");
   const showNotification = useNotificationStore(state => state.showNotification);
+
   useEffect(() => {
     const words = text.trim().split(/\s+/).filter(word => word.length > 0);
     setWordCount(words.length);
@@ -39,11 +41,11 @@ export default function DashboardPage() {
   const copyDisabled = summarizing || summary === "";
 
   return (
-    <main className="w-full max-w-[1460px] mx-auto px-4">
-      <div className="min-h-screen py-8 flex flex-row">
+    <main className="w-full max-w-[1460px] mx-auto px-0 sm:px-4">
+      <div className="min-h-screen flex flex-col md:flex-row">
         <Sidebar />
         
-        <div className="flex flex-col py-10 px-[42px] bg-white rounded-r-ud-radius w-full">
+        <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full">
           <Header
             title="Text Summarizer"
             description="Summarize and manage texts with ease"

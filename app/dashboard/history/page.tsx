@@ -7,38 +7,47 @@ import Pagination from "./components/Pagination";
 import Header from "../components/Header";
 
 export default function HistoryPage() {
-    const [selectedDate, setSelectedDate] = useState<string>("");
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [selectedPage, setSelectedPage] = useState<number>(1);
-    const [data, setData] = useState<any[]>([
+    const [selectedDate, setSelectedDate] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedPage, setSelectedPage] = useState(1);
+
+    // Dummy data for demonstration
+    const [data, setData] = useState([
         {
-            menuOpen: false,
-            text: "Naruto Uzumaki became the greatest shinobi of his time through unparalleled power, relentless determination, and his ability to unite and inspire others. Mastering Kurama's chakra and the Sage of Six Paths' power, he achieved near-godlike abilities, defeating formidable foes like Kaguya Ōtsutsuki. His leadership united the shinobi nations, ending generations of conflict. Despite personal struggles, Naruto turned his pain into strength, becoming a beacon of hope and proving that hard work and perseverance could overcome any obstacle.",
-            date: "December 10, 2024 • 3:20 PM",
-            wordCount: 77,
-            characterCount: 538
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            date: "2024-01-15",
+            wordCount: 19,
+            characterCount: 123,
+            menuOpen: false
         },
         {
-            menuOpen: false,
-            text: "Sample text 2",
-            date: "December 10, 2024 • 3:21 PM",
-            wordCount: 50,
-            characterCount: 300
+            text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            date: "2024-01-14",
+            wordCount: 19,
+            characterCount: 108,
+            menuOpen: false
         },
         {
-            menuOpen: false,
-            text: "Sample text 3",
-            date: "December 10, 2024 • 3:22 PM",
-            wordCount: 60,
-            characterCount: 400
+            text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            date: "2024-01-13",
+            wordCount: 19,
+            characterCount: 107,
+            menuOpen: false
         },
         {
-            menuOpen: false,
-            text: "Sample text 4",
-            date: "December 10, 2024 • 3:23 PM",
-            wordCount: 45,
-            characterCount: 250
+            text: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            date: "2024-01-12",
+            wordCount: 19,
+            characterCount: 110,
+            menuOpen: false
         },
+        {
+            text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+            date: "2024-01-11",
+            wordCount: 15,
+            characterCount: 98,
+            menuOpen: false
+        }
     ]);
 
     const handleMenuOpen = (index: number) => {
@@ -49,11 +58,11 @@ export default function HistoryPage() {
     }
 
     return (
-        <main className="w-full max-w-[1460px] mx-auto px-4">
-            <div className="min-h-screen py-8 flex flex-row">
+        <main className="w-full max-w-[1460px] mx-auto px-0 sm:px-4">
+            <div className="min-h-screen flex flex-col md:flex-row">
                 <Sidebar />
 
-                <div className="flex flex-col py-10 px-[42px] bg-white rounded-r-ud-radius w-full">
+                <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full">
                     <Header
                         title="History"
                         description="View previously summarized texts"
