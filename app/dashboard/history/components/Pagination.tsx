@@ -17,12 +17,12 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
     const pages = Array.from({ length: Math.min(3, totalPages) }, (_, i) => i + 1);
 
     return (
-        <div className="flex flex-row justify-between items-center mt-[18px]">
-            <p className="text-[rgba(15,19,36,0.60)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-[18px]">
+            <p className="text-[rgba(15,19,36,0.60)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] order-2 sm:order-1">
                 Showing {startItem}-{endItem} of {totalItems}
             </p>
 
-            <div className="flex flex-row justify-end items-center gap-[10px]">
+            <div className="flex flex-row justify-center sm:justify-end items-center gap-[10px] w-full sm:w-auto order-1 sm:order-2">
                 <button 
                     onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
                     className="flex p-[10px] justify-center items-center gap-[4px] rounded-[12px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]"
@@ -36,13 +36,13 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
                         key={page}
                         onClick={() => onPageChange(page)}
                         className={`
-                            flex w-[40px] h-[40px] p-[10px] justify-center items-center gap-[4px] 
+                            flex w-[36px] sm:w-[40px] h-[36px] sm:h-[40px] p-[8px] sm:p-[10px] justify-center items-center gap-[4px] 
                             rounded-[12px] cursor-pointer
                             ${page === currentPage
                                 ? "bg-[rgba(10,15,41,0.04)] text-[#14151A]"
                                 : "bg-white text-[rgba(15,19,36,0.60)] hover:bg-[rgba(10,15,41,0.04)]"
                             }
-                            text-center font-inter text-[16px] font-medium leading-[24px] tracking-[-0.16px]
+                            text-center font-inter text-[14px] sm:text-[16px] font-medium leading-[20px] sm:leading-[24px] tracking-[-0.16px]
                         `}
                     >
                         {page}
@@ -59,4 +59,4 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
             </div>
         </div>
     );
-} 
+}
