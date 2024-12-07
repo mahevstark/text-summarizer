@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://undetectable.ai/sitemap.xml
