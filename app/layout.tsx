@@ -14,23 +14,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Undetectable AI Text Summarizer | Summarize Text Instantly",
+  title: "Text Summarizer by Undetectable AI | Summarize Text Instantly",
   description: "Transform long texts into clear, concise summaries with our AI-powered text summarizer. Save time and improve comprehension with accurate text summarization.",
   keywords: "text summarizer, AI summarization, document summary, text summary tool, content summarization",
   authors: [{ name: "Undetectable AI" }],
   creator: "Undetectable AI",
   publisher: "Undetectable AI",
+  metadataBase: new URL('https://undetectable.ai'),
   openGraph: {
-    title: "Undetectable AI Text Summarizer | Summarize Text Instantly",
+    title: "Text Summarizer by Undetectable AI | Summarize Text Instantly",
     description: "Transform long texts into clear, concise summaries with our AI-powered text summarizer. Save time and improve comprehension with accurate text summarization.",
     url: "https://undetectable.ai",
-    siteName: "Undetectable AI",
+    siteName: "Text Summarizer by Undetectable AI",
     images: [
       {
-        url: "/images/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Undetectable AI Text Summarizer"
+        url: "/images/logo-60px.svg",
+        width: 60,
+        height: 60,
+        alt: "Undetectable AI Logo"
       }
     ],
     locale: "en_US",
@@ -38,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Undetectable AI Text Summarizer | Summarize Text Instantly",
+    title: "Text Summarizer by Undetectable AI | Summarize Text Instantly",
     description: "Transform long texts into clear, concise summaries with our AI-powered text summarizer. Save time and improve comprehension with accurate text summarization.",
-    images: ["/images/twitter-image.jpg"],
+    images: ["/images/logo-60px.svg"],
     creator: "@UndetectableAI"
   },
   robots: {
