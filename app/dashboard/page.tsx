@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Sidebar from "@/app/dashboard/components/sidebar";
-import Header from "@/app/shared-components/Header";
-import TextInput from "@/app/shared-components/TextInput";
-import TextControls from "@/app/shared-components/TextControls";
-import SummaryDisplay from "@/app/shared-components/SummaryDisplay";
-import SummaryControls from "@/app/shared-components/SummaryControls";
+import Header from "./components/Header";
+import TextInput from "./components/TextInput";
+import TextControls from "./components/TextControls";
+import SummaryDisplay from "./components/SummaryDisplay";
+import SummaryControls from "./components/SummaryControls";
 import { useNotificationStore, NotificationType } from "@/app/store/notificationStore";
 export default function DashboardPage() {
   const [text, setText] = useState("");

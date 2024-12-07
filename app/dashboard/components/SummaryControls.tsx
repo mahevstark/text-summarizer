@@ -48,7 +48,7 @@ export default function SummaryControls({
             showNotification(NotificationTypes.success, 'Copied to clipboard');
           }}
           disabled={copyDisabled}
-          className={`flex justify-center items-center gap-[2px] px-[10px] py-[6px] rounded-[10px] font-inter text-[14px] font-medium leading-[20px] tracking-[-0.07px] text-center ${
+          className={`flex justify-center items-center gap-[6px] px-[10px] py-[6px] rounded-[10px] font-inter text-[14px] font-medium leading-[20px] tracking-[-0.07px] text-center ${
             copyDisabled 
               ? 'border border-[#E9EAEC] bg-white text-[rgba(10,15,41,0.25)]'
               : 'bg-[rgba(10,15,41,0.08)] text-[#14151A]'

@@ -1,10 +1,10 @@
 "use client";
 import Sidebar from "@/app/dashboard/components/sidebar";
-import FilterHeader from "@/app/shared-components/FilterHeader";
-import Header from "@/app/shared-components/Header";
+import FilterHeader from "./components/FilterHeader";
 import { useState } from "react";
 import HistoryItem from "./components/HistoryItem";
 import Pagination from "./components/Pagination";
+import Header from "../components/Header";
 
 export default function HistoryPage() {
     const [selectedDate, setSelectedDate] = useState<string>("");
