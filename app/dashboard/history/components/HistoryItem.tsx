@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import HistoryItemMetadata from './HistoryItemMetadata';
 import HistoryItemMenu from './HistoryItemMenu';
-import HistoryDeleteConfirmation from './HistoryDeleteConfirmation';
 
 interface HistoryItemProps {
     text: string;
@@ -9,10 +8,11 @@ interface HistoryItemProps {
     wordCount: number;
     characterCount: number;
     isMenuOpen: boolean;
+    index: number;
     onMenuToggle: () => void;
     onCopy?: () => void;
     onEdit?: () => void;
-    onDelete?: () => void;
+    onDelete?: (index: number) => void;
 }
 
 export default function HistoryItem({
@@ -24,10 +24,10 @@ export default function HistoryItem({
     onMenuToggle,
     onCopy,
     onEdit,
-    onDelete
+    onDelete,
+    index
 }: HistoryItemProps) {
     const menuRef = useRef<HTMLDivElement>(null);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -66,16 +66,13 @@ export default function HistoryItem({
                     <HistoryItemMenu
                         isOpen={isMenuOpen}
                         onToggle={onMenuToggle}
-                        onCopy={onCopy}
-                        onEdit={onEdit}
-                        onDelete={() => setIsDeleteOpen(true)}
-                    />
-                </div>
-                <div>
-                    <HistoryDeleteConfirmation
-                        isOpen={isDeleteOpen}
-                        onClose={() => setIsDeleteOpen(false)}
-                        onConfirm={() => onDelete?.()}
+                        onCopy={onCopy || (() => {})}
+                        onEdit={onEdit || (() => {})}
+                        onDelete={() => {
+                            if (onDelete) {
+                                onDelete(index);
+                            }
+                        }}
                     />
                 </div>
             </div>
