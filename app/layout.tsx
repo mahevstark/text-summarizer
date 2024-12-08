@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     google: "google-site-verification-code",
   },
   alternates: {
-    canonical: "https://text-summarizer-lac.vercel.app",
+    canonical: '/',
   }
 };
 
