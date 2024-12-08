@@ -12,10 +12,12 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { useSummaryStore } from './store/summary-store'
 import { useRouter } from "next/navigation";
+import HistoryDeleteConfirmation from "./components/HistoryDeleteConfirmation";
 
+let holdMyIndex:number = -1
 export default function HistoryPage() {
     const router = useRouter()
-    const { 
+    const {
         selectedDate, setSelectedDate,
         searchQuery, setSearchQuery,
         selectedPage, setSelectedPage,
@@ -23,20 +25,23 @@ export default function HistoryPage() {
         setSummaries, setIsLoading,
         setEditingSummary, removeSummary
     } = useSummaryStore()
-    
+
+
     const showNotification = useNotificationStore(state => state.showNotification)
     const [menuIndex, setMenuIndex] = useState<number>(-1)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
 
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true)
-            const result = await getSummaries({ 
-                page: selectedPage, 
-                search: searchQuery, 
-                period: selectedDate 
+            const result = await getSummaries({
+                page: selectedPage,
+                search: searchQuery,
+                period: selectedDate
             })
-            
-            if(result.error.title !== "") {
+
+            if (result.error.title !== "") {
                 showNotification(NotificationTypes.error, result.error.title, result.error.message)
             } else {
                 // await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure state updates
@@ -48,7 +53,7 @@ export default function HistoryPage() {
     }, [selectedPage, searchQuery, selectedDate, showNotification, setIsLoading, setSummaries])
 
     useEffect(() => {
-        if(isLoading) {
+        if (isLoading) {
             setIsLoading(false)
         }
     }, [summaries])
@@ -68,15 +73,32 @@ export default function HistoryPage() {
         }
     }, [selectedPage, selectedDate, fetchData]);
 
-    const onDelete = async (id: number, index: number) => {
-        setMenuIndex(-1)
-        removeSummary(index)
-        const result = await deleteSummary(id)
-        if(result.success) {
-            showNotification(NotificationTypes.success, 'Summary deleted')
-        } else {
-            showNotification(NotificationTypes.error, result.error.title, result.error.message)
-            // Refresh data to restore the deleted item if deletion failed
+    const onDelete = async () => {
+        try {
+            // Check if holdMyIndex is valid
+            if (holdMyIndex === undefined || holdMyIndex < 0) {
+                return;
+            }
+
+            // Check if summary exists at index
+            const summary = summaries[holdMyIndex];
+            if (!summary) {
+                return;
+            }
+
+            removeSummary(holdMyIndex);
+            const result = await deleteSummary(summary.id);
+            setMenuIndex(-1);
+
+            if (result.success) {
+                showNotification(NotificationTypes.success, 'Summary deleted')
+            } else {
+                showNotification(NotificationTypes.error, result.error.title, result.error.message)
+                // Refresh data to restore the deleted item if deletion failed
+                fetchData()
+            }
+        } catch {
+            showNotification(NotificationTypes.error, "Error", "We couldn't complete your request at this moment, please try again later")
             fetchData()
         }
     }
@@ -106,7 +128,7 @@ export default function HistoryPage() {
         if (summaries.length === 0) {
             if (searchQuery) {
                 return (
-                    <div className="flex flex-col items-center justify-center py-20">
+                    <div className="flex flex-col items-center justify-center py-20 animate-fadeIn">
                         <h3 className="text-xl font-semibold text-gray-700">No results found</h3>
                         <p className="mt-2 text-gray-500">Try adjusting your search or filters</p>
                     </div>
@@ -114,12 +136,12 @@ export default function HistoryPage() {
             }
 
             return (
-                <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex flex-col items-center justify-center py-20 animate-fadeIn">
                     <h3 className="text-xl font-semibold text-gray-700">No summaries yet</h3>
                     <p className="mt-2 text-gray-500">Create your first summary to get started</p>
-                    <Link 
-                        href="/dashboard" 
-                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    <Link
+                        href="/dashboard"
+                        className="mt-4 px-6 py-2 bg-textbase text-white rounded-lg hover:bg-text-textbase transition-colors hover:scale-105 transform duration-300"
                     >
                         Create Summary
                     </Link>
@@ -128,22 +150,32 @@ export default function HistoryPage() {
         }
 
         return summaries.map((item, index) => (
-            <HistoryItem
+            <div
                 key={index}
-                text={item.userText}
-                date={format(new Date(item.createdAt), 'MMMM d, yyyy • h:mm a')}
-                wordCount={item.wordCount}
-                characterCount={item.characterCount}
-                isMenuOpen={menuIndex === index}
-                onMenuToggle={() => setMenuIndex(index)}
-                onCopy={() => {
-                    setMenuIndex(-1)
-                    navigator.clipboard.writeText(item.userText)
-                    showNotification(NotificationTypes.success, 'Copied to clipboard')
-                }}
-                onEdit={() => handleEdit(item)}
-                onDelete={() => onDelete(item.id, index)}
-            />
+                className="animate-slideUpFade"
+                style={{ animationDelay: `${index * 0.1}s` }}
+            >
+                <HistoryItem
+                    text={item.userText}
+                    index={index}
+                    date={format(new Date(item.createdAt), 'MMMM d, yyyy • h:mm a')}
+                    wordCount={item.wordCount}
+                    characterCount={item.characterCount}
+                    isMenuOpen={menuIndex === index}
+                    onMenuToggle={() => setMenuIndex(menuIndex === index ? -1 : index)}
+                    onCopy={() => {
+                        setMenuIndex(-1)
+                        navigator.clipboard.writeText(item.userText)
+                        showNotification(NotificationTypes.success, 'Copied to clipboard')
+                    }}
+                    onEdit={() => handleEdit(item)}
+                    onDelete={(indexToDelete: number) => {
+                        holdMyIndex = indexToDelete
+                        setIsDeleteOpen(true)
+                    }}
+                />
+
+            </div>
         ))
     }
 
@@ -152,33 +184,45 @@ export default function HistoryPage() {
             <div className="min-h-screen flex flex-col md:flex-row">
                 <Sidebar />
 
-                <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full">
+                <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full animate-fadeIn">
                     <Header
                         title="History"
                         description="View previously summarized texts"
                     />
 
-                    <FilterHeader
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
-                        searchQuery={searchQuery}
-                        setSearchQuery={setSearchQuery}
-                    />
+                    <div className="animate-slideInRight" style={{ animationDelay: '0.1s', zIndex: 100 }}>
+                        <FilterHeader
+                            selectedDate={selectedDate}
+                            setSelectedDate={setSelectedDate}
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                        />
+                    </div>
 
                     <div className="mt-4 gap-[10px] flex flex-col">
                         {renderContent()}
+                        <HistoryDeleteConfirmation
+                            isOpen={isDeleteOpen}
+                            onClose={() => setIsDeleteOpen(false)}
+                            onConfirm={() => {
+                                onDelete()
+                                setIsDeleteOpen(false)
+                            }}
+                        />
                     </div>
 
                     {summaries.length > 0 && (
-                        <Pagination
-                            currentPage={selectedPage}
-                            totalItems={total || 0}
-                            itemsPerPage={5}
-                            onPageChange={(page:number) => {
-                                console.log("page changed", page);
-                                setSelectedPage(page);
-                            }}
-                        />
+                        <div className="animate-slideUpFade" style={{ animationDelay: '0.3s' }}>
+                            <Pagination
+                                currentPage={selectedPage}
+                                totalItems={total || 0}
+                                itemsPerPage={5}
+                                onPageChange={(page: number) => {
+                                    console.log("page changed", page);
+                                    setSelectedPage(page);
+                                }}
+                            />
+                        </div>
                     )}
                 </div>
             </div>
