@@ -1,7 +1,7 @@
 'use server'
 
-import { prisma } from '@/app/lib/db'
-import { checkAuth } from '@/app/actions/auth'
+import { prisma } from '../../../lib/db'
+import { checkAuth } from '../../../actions/auth'
 
 export type DeleteSummaryResponse = {
   success: boolean
