@@ -62,13 +62,13 @@ export default function Dashboard() {
       <div className="min-h-screen flex flex-col md:flex-row">
         <Sidebar />
         
-        <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full">
+        <div className="flex flex-col py-5 md:py-10 px-4 md:px-[42px] bg-white rounded-none md:rounded-r-ud-radius w-full animate-fadeIn">
           <Header
             title="Text Summarizer"
             description="Summarize and manage texts with ease"
           />
 
-          <div className="mt-5 bg-box-bg rounded-ud-radius py-4 border border-box-bg">
+          <div className="mt-5 bg-box-bg rounded-ud-radius py-4 border border-box-bg animate-slideInRight">
             <TextInput 
               text={text}
               setText={setText}
@@ -90,15 +90,19 @@ export default function Dashboard() {
             />
           </div>
 
-          <SummaryDisplay summary={summary} />
+          <div className="animate-slideInLeft" style={{ animationDelay: '0.2s' }}>
+            <SummaryDisplay summary={summary} />
+          </div>
 
-          <SummaryControls 
-            wordCount={summaryWordCount}
-            charCount={summaryCharCount}
-            copyDisabled={copyDisabled}
-            summary={summary}
-            showNotification={(type: NotificationType, title:string, msg?: string) => showNotification(type, title, msg)}
-          />
+          <div className="animate-slideInRight" style={{ animationDelay: '0.3s' }}>
+            <SummaryControls 
+              wordCount={summaryWordCount}
+              charCount={summaryCharCount}
+              copyDisabled={copyDisabled}
+              summary={summary}
+              showNotification={(type: NotificationType, title:string, msg?: string) => showNotification(type, title, msg)}
+            />
+          </div>
         </div>
       </div>
     </main>
