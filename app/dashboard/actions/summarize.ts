@@ -1,8 +1,8 @@
 'use server'
 
 import OpenAI from 'openai';
-import { prisma } from '@/app/lib/db';
-import { checkAuth } from '@/app/actions/auth';
+import { prisma } from '../../lib/db';
+import { checkAuth } from '../../actions/auth';
 import { EditingSummary } from '../history/store/summary-store';
 
 const openai = new OpenAI({
