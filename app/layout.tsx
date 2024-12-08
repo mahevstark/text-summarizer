@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Undetectable AI" }],
   creator: "Undetectable AI",
   publisher: "Undetectable AI",
-  metadataBase: new URL('https://undetectable.ai'),
+  metadataBase: new URL('https://text-summarizer-lac.vercel.app'),
   openGraph: {
     title: "Text Summarizer by Undetectable AI | Summarize Text Instantly",
     description: "Transform long texts into clear, concise summaries with our AI-powered text summarizer. Save time and improve comprehension with accurate text summarization.",
-    url: "https://undetectable.ai",
+    url: "https://text-summarizer-lac.vercel.app",
     siteName: "Text Summarizer by Undetectable AI",
     images: [
       {
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     google: "google-site-verification-code",
   },
   alternates: {
-    canonical: "https://undetectable.ai",
+    canonical: "https://text-summarizer-lac.vercel.app",
   }
 };
 
@@ -70,6 +70,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Text Summarizer by Undetectable AI",
+              "applicationCategory": "Text Analysis Tool",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            })
+          }}
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${publicSans.className} ${inter.className} antialiased`}
       >

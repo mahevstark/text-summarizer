@@ -56,6 +56,7 @@ export default function LoginPage() {
         alt="UD - Logo" 
         width={60}
         height={60}
+        priority
         className="w-[40px] h-[40px] xs:w-[50px] xs:h-[50px] sm:w-[76px] sm:h-[76px]"
       />
       <h2 className="text-base xs:text-lg sm:text-xl font-medium text-textbase font-inter tracking-heading mt-2 text-center">Log in to Undetectable AI</h2>
