@@ -12,10 +12,12 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { useSummaryStore } from './store/summary-store'
 import { useRouter } from "next/navigation";
+import HistoryDeleteConfirmation from "./components/HistoryDeleteConfirmation";
 
+let holdMyIndex:number = -1
 export default function HistoryPage() {
     const router = useRouter()
-    const { 
+    const {
         selectedDate, setSelectedDate,
         searchQuery, setSearchQuery,
         selectedPage, setSelectedPage,
@@ -23,20 +25,23 @@ export default function HistoryPage() {
         setSummaries, setIsLoading,
         setEditingSummary, removeSummary
     } = useSummaryStore()
-    
+
+
     const showNotification = useNotificationStore(state => state.showNotification)
     const [menuIndex, setMenuIndex] = useState<number>(-1)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
 
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true)
-            const result = await getSummaries({ 
-                page: selectedPage, 
-                search: searchQuery, 
-                period: selectedDate 
+            const result = await getSummaries({
+                page: selectedPage,
+                search: searchQuery,
+                period: selectedDate
             })
-            
-            if(result.error.title !== "") {
+
+            if (result.error.title !== "") {
                 showNotification(NotificationTypes.error, result.error.title, result.error.message)
             } else {
                 // await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure state updates
@@ -48,7 +53,7 @@ export default function HistoryPage() {
     }, [selectedPage, searchQuery, selectedDate, showNotification, setIsLoading, setSummaries])
 
     useEffect(() => {
-        if(isLoading) {
+        if (isLoading) {
             setIsLoading(false)
         }
     }, [summaries])
@@ -68,15 +73,32 @@ export default function HistoryPage() {
         }
     }, [selectedPage, selectedDate, fetchData]);
 
-    const onDelete = async (id: number, index: number) => {
-        setMenuIndex(-1)
-        removeSummary(index)
-        const result = await deleteSummary(id)
-        if(result.success) {
-            showNotification(NotificationTypes.success, 'Summary deleted')
-        } else {
-            showNotification(NotificationTypes.error, result.error.title, result.error.message)
-            // Refresh data to restore the deleted item if deletion failed
+    const onDelete = async () => {
+        try {
+            // Check if holdMyIndex is valid
+            if (holdMyIndex === undefined || holdMyIndex < 0) {
+                return;
+            }
+
+            // Check if summary exists at index
+            const summary = summaries[holdMyIndex];
+            if (!summary) {
+                return;
+            }
+
+            removeSummary(holdMyIndex);
+            const result = await deleteSummary(summary.id);
+            setMenuIndex(-1);
+
+            if (result.success) {
+                showNotification(NotificationTypes.success, 'Summary deleted')
+            } else {
+                showNotification(NotificationTypes.error, result.error.title, result.error.message)
+                // Refresh data to restore the deleted item if deletion failed
+                fetchData()
+            }
+        } catch {
+            showNotification(NotificationTypes.error, "Error", "We couldn't complete your request at this moment, please try again later")
             fetchData()
         }
     }
@@ -117,9 +139,9 @@ export default function HistoryPage() {
                 <div className="flex flex-col items-center justify-center py-20 animate-fadeIn">
                     <h3 className="text-xl font-semibold text-gray-700">No summaries yet</h3>
                     <p className="mt-2 text-gray-500">Create your first summary to get started</p>
-                    <Link 
-                        href="/dashboard" 
-                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors hover:scale-105 transform duration-300"
+                    <Link
+                        href="/dashboard"
+                        className="mt-4 px-6 py-2 bg-textbase text-white rounded-lg hover:bg-text-textbase transition-colors hover:scale-105 transform duration-300"
                     >
                         Create Summary
                     </Link>
@@ -128,13 +150,14 @@ export default function HistoryPage() {
         }
 
         return summaries.map((item, index) => (
-            <div 
-                key={index} 
-                className="animate-slideUpFade" 
+            <div
+                key={index}
+                className="animate-slideUpFade"
                 style={{ animationDelay: `${index * 0.1}s` }}
             >
                 <HistoryItem
                     text={item.userText}
+                    index={index}
                     date={format(new Date(item.createdAt), 'MMMM d, yyyy • h:mm a')}
                     wordCount={item.wordCount}
                     characterCount={item.characterCount}
@@ -146,8 +169,12 @@ export default function HistoryPage() {
                         showNotification(NotificationTypes.success, 'Copied to clipboard')
                     }}
                     onEdit={() => handleEdit(item)}
-                    onDelete={() => onDelete(item.id, index)}
+                    onDelete={(indexToDelete: number) => {
+                        holdMyIndex = indexToDelete
+                        setIsDeleteOpen(true)
+                    }}
                 />
+
             </div>
         ))
     }
@@ -174,6 +201,14 @@ export default function HistoryPage() {
 
                     <div className="mt-4 gap-[10px] flex flex-col">
                         {renderContent()}
+                        <HistoryDeleteConfirmation
+                            isOpen={isDeleteOpen}
+                            onClose={() => setIsDeleteOpen(false)}
+                            onConfirm={() => {
+                                onDelete()
+                                setIsDeleteOpen(false)
+                            }}
+                        />
                     </div>
 
                     {summaries.length > 0 && (
@@ -182,7 +217,7 @@ export default function HistoryPage() {
                                 currentPage={selectedPage}
                                 totalItems={total || 0}
                                 itemsPerPage={5}
-                                onPageChange={(page:number) => {
+                                onPageChange={(page: number) => {
                                     console.log("page changed", page);
                                     setSelectedPage(page);
                                 }}

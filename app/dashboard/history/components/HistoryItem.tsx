@@ -9,10 +9,11 @@ interface HistoryItemProps {
     wordCount: number;
     characterCount: number;
     isMenuOpen: boolean;
+    index: number;
     onMenuToggle: () => void;
     onCopy?: () => void;
     onEdit?: () => void;
-    onDelete?: () => void;
+    onDelete?: (index: number) => void;
 }
 
 export default function HistoryItem({
@@ -21,13 +22,13 @@ export default function HistoryItem({
     wordCount,
     characterCount,
     isMenuOpen,
+    index,
     onMenuToggle,
     onCopy,
     onEdit,
     onDelete
 }: HistoryItemProps) {
     const menuRef = useRef<HTMLDivElement>(null);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -64,17 +65,14 @@ export default function HistoryItem({
                         onToggle={onMenuToggle}
                         onCopy={onCopy || (() => {})}
                         onEdit={onEdit || (() => {})}
-                        onDelete={() => setIsDeleteOpen(true)}
+                        onDelete={() => {
+                            onDelete && onDelete(index)
+                        }}
                     />
                 </div>
-                <div>
-                    <HistoryDeleteConfirmation
-                        isOpen={isDeleteOpen}
-                        onClose={() => setIsDeleteOpen(false)}
-                        onConfirm={() => onDelete?.()}
-                    />
-                </div>
+                
             </div>
+            
         </div>
     );
 }

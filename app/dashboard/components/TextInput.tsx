@@ -25,17 +25,17 @@ export default function TextInput({ text, setText, inputMode, setInputMode }: Te
       ) : (
         <div className="bg-white flex flex-row justify-center items-center gap-5 py-[26px]">
           <button 
-            className="flex flex-col justify-center items-center gap-2 border border-action-normal rounded-[10px] py-[18px] px-[30px] hover:bg-gray-50 transition-all duration-300 hover:scale-105 animate-fadeIn" 
+            className="flex flex-col justify-center items-center gap-2 border border-action-normal rounded-[10px] py-[18px] px-[30px] hover:bg-gray-50 transition-all duration-300 hover:scale-105 animate-fadeIn hover:-translate-y-1 hover:shadow-lg" 
             onClick={() => setInputMode(true)}
           >
-            <div className="animate-pulseScale">
+            <div className="animate-pulseScale transform transition-transform hover:rotate-12">
               <Image src={keyboardIcon} alt="Keyboard" width={24} height={25} />
             </div>
             <p className="text-[#131615] font-inter text-[12px] font-medium leading-[194.7%] text-center">Enter Text</p>
           </button>
 
           <button 
-            className="flex flex-col justify-center items-center gap-2 border border-action-normal rounded-[10px] py-[18px] px-[30px] hover:bg-gray-50 transition-all duration-300 hover:scale-105 animate-fadeIn" 
+            className="flex flex-col justify-center items-center gap-2 border border-action-normal rounded-[10px] py-[18px] px-[30px] hover:bg-gray-50 transition-all duration-300 hover:scale-105 animate-fadeIn hover:-translate-y-1 hover:shadow-lg" 
             style={{ animationDelay: '0.1s' }}
             onClick={() => {
               navigator.clipboard.readText().then(text => {
@@ -44,7 +44,7 @@ export default function TextInput({ text, setText, inputMode, setInputMode }: Te
               });
             }}
           >
-            <div className="animate-pulseScale">
+            <div className="animate-pulseScale transform transition-transform hover:rotate-12">
               <Image src={clipboardIcon} alt="Clipboard" width={24} height={25} />
             </div>
             <p className="text-[#131615] font-inter text-[12px] font-medium leading-[194.7%] text-center">Paste Text</p>
