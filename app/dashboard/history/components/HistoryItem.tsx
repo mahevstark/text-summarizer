@@ -31,15 +31,11 @@ export default function HistoryItem({
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            // Check if click target is a child of menuRef
-            const isClickInsideMenu = menuRef.current?.contains(event.target as Node);
-            // If click is outside menu and menu is open, close it
-            if (!isClickInsideMenu && isMenuOpen) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 onMenuToggle();
             }
         }
 
-        // Only add listener if menu is open
         if (isMenuOpen) {
             document.addEventListener('mousedown', handleClickOutside);
         }
@@ -50,10 +46,10 @@ export default function HistoryItem({
     }, [isMenuOpen, onMenuToggle]);
 
     return (
-        <div className="flex p-5 items-start gap-[11px] self-stretch rounded-2xl border border-[#DEE0E3] bg-white w-full">
+        <div className="flex p-5 items-start gap-[11px] self-stretch rounded-2xl border border-[#DEE0E3] bg-white w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <div className="flex flex-row items-start justify-between w-full">
                 <div className="flex flex-col flex-1 mr-4">
-                    <span className="overflow-hidden text-[#14151A] text-ellipsis  font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] w-full h-[42px]">
+                    <span className="overflow-hidden text-[#14151A] text-ellipsis font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] w-full h-[42px] hover:text-purple-accent transition-colors duration-300">
                         {text}
                     </span>
                     <HistoryItemMetadata
@@ -62,7 +58,7 @@ export default function HistoryItem({
                         characterCount={characterCount}
                     />
                 </div>
-                <div ref={menuRef}>
+                <div ref={menuRef} className="transition-transform duration-300 hover:scale-105">
                     <HistoryItemMenu
                         isOpen={isMenuOpen}
                         onToggle={onMenuToggle}
