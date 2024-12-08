@@ -32,7 +32,7 @@ export default function Dashboard() {
       setSummary(editingSummary.summary)
       setInputMode(true)
     }
-  }, [editingSummary])
+  }, [editingSummary, setInputMode, setSummary, setText]);
 
   const showNotification = useNotificationStore(state => state.showNotification);
 

@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import HistoryItemMetadata from './HistoryItemMetadata';
 import HistoryItemMenu from './HistoryItemMenu';
-import HistoryDeleteConfirmation from './HistoryDeleteConfirmation';
 
 interface HistoryItemProps {
     text: string;
@@ -66,7 +65,7 @@ export default function HistoryItem({
                         onCopy={onCopy || (() => {})}
                         onEdit={onEdit || (() => {})}
                         onDelete={() => {
-                            onDelete && onDelete(index)
+                            if(onDelete) onDelete(index)
                         }}
                     />
                 </div>
