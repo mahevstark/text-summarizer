@@ -68,6 +68,26 @@ const config: Config = {
         'nav': '10px',
         'badge': '4px',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.9)' },
+          '100%': { transform: 'scale(1)' }
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-4px)' },
+          '75%': { transform: 'translateX(4px)' }
+        }
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-out forwards',
+        scaleIn: 'scaleIn 0.5s ease-out forwards',
+        shake: 'shake 0.5s ease-in-out'
+      }
     },
   },
   plugins: [],
