@@ -16,7 +16,7 @@ dotenv.config({ path: envPath, override: true });
 const defaultPrisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.DATABASE_URL
+      url: process.env.DATABASE_URL as string
     }
   }
 });
@@ -24,7 +24,7 @@ const defaultPrisma = new PrismaClient({
 export const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.DIRECT_URL
+      url: process.env.DIRECT_URL as string
     }
   }
 });

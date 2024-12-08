@@ -153,7 +153,7 @@ describe('Database and Auth Tests', () => {
       const user = users[0]
 
       const token = jwt.sign(
-        { userId: user.id, email: user.email, name: user.name },
+        { userId: user?.id, email: user?.email, name: user?.name },
         process.env.JWT_SECRET || 'test-secret',
         { expiresIn: '1h' }
       )
@@ -165,7 +165,7 @@ describe('Database and Auth Tests', () => {
 
       const result = await checkAuth()
       expect(result).toBeDefined()
-      expect(result?.email).toBe(user.email)
+      expect(result?.email).toBe(user?.email)
     })
   })
 

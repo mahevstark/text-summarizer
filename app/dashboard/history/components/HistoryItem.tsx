@@ -66,8 +66,8 @@ export default function HistoryItem({
                     <HistoryItemMenu
                         isOpen={isMenuOpen}
                         onToggle={onMenuToggle}
-                        onCopy={onCopy}
-                        onEdit={onEdit}
+                        onCopy={onCopy || (() => {})}
+                        onEdit={onEdit || (() => {})}
                         onDelete={() => setIsDeleteOpen(true)}
                     />
                 </div>
