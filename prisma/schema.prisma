@@ -25,18 +25,22 @@ model User {
 
   // relations
   summaries Summary[]
+
+  @@index([email])
 }
 
 model Summary {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  userText         String
-  summary          String
-  wordCount        Int
-  characterCount   Int
-  userId           Int
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userText       String
+  summary        String
+  wordCount      Int
+  characterCount Int
+  userId         Int
 
   // relations
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId])
 }

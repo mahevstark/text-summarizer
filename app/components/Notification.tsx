@@ -17,6 +17,7 @@ export default function Notification() {
       }, 3000)
       return () => clearTimeout(timer)
     }
+    return () => {}
   }, [isVisible, hideNotification])
 
   if (!isVisible) return null

@@ -68,6 +68,62 @@ const config: Config = {
         'nav': '10px',
         'badge': '4px',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.9)' },
+          '100%': { transform: 'scale(1)' }
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-4px)' },
+          '75%': { transform: 'translateX(4px)' }
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(-20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        },
+        pulseScale: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' }
+        },
+        floatUp: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' }
+        },
+        slideUpFade: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        popIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '40%': { transform: 'scale(1.02)', opacity: '0.8' },
+          '100%': { transform: 'scale(1)', opacity: '1' }
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' }
+        }
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-out forwards',
+        scaleIn: 'scaleIn 0.5s ease-out forwards',
+        shake: 'shake 0.5s ease-in-out',
+        slideInRight: 'slideInRight 0.5s ease-out forwards',
+        slideInLeft: 'slideInLeft 0.5s ease-out forwards',
+        pulseScale: 'pulseScale 2s ease-in-out infinite',
+        floatUp: 'floatUp 3s ease-in-out infinite',
+        slideUpFade: 'slideUpFade 0.4s ease-out forwards',
+        popIn: 'popIn 0.4s ease-out forwards',
+        shimmer: 'shimmer 2s infinite linear'
+      }
     },
   },
   plugins: [],

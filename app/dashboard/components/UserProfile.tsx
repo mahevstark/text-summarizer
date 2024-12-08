@@ -2,13 +2,35 @@
 
 import Image from 'next/image';
 import logoutIcon from '@/public/images/icons/logout.svg';
-import { logout } from '@/app/actions/auth';
+import { checkAuth, logout } from '@/app/actions/auth';
 import { useRouter } from 'next/navigation';
 import { useNotificationStore, NotificationTypes } from '@/app/store/notificationStore';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+type AuthUser = {
+  email: string;
+  status: string | null;
+  id: number;
+  name: string | null;
+} | null;
 
 export default function UserProfile() {
   const router = useRouter();
   const { showNotification } = useNotificationStore();
+
+  const [user, setUser] = useState<AuthUser>(null);
+
+  useEffect(() => {
+    getUser()
+  }, []);
+
+  const getUser = async () => {
+    const user = await checkAuth();
+    setUser(user);
+  }
+
+  const initials = user?.name?.split(' ').map(name => name[0]).join('');
 
   const handleLogout = async () => {
     await logout();
@@ -19,11 +41,11 @@ export default function UserProfile() {
   return (
     <div className="flex items-center gap-3 mb-6 px-4">
       <div className="w-[32px] h-[32px] rounded-full bg-purple-accent flex items-center justify-center font-inter text-profile-name text-white">
-        JD
+        {initials}
       </div>
       <div className="flex-1">
-        <h3 className="text-white font-inter text-profile-name">John Doe</h3>
-        <p className="text-profile-email font-inter text-grey-secondary">johndoe@email.com</p>
+        <h3 className="text-white font-inter text-profile-name">{user?.name}</h3>
+        <p className="text-profile-email font-inter text-grey-secondary">{user?.email}</p>
       </div>
       <button 
         className="text-grey-secondary hover:text-white"

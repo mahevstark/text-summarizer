@@ -34,7 +34,7 @@ export async function login(formData: { email: string, password: string }): Prom
         error: {
           title: "Validation Error",
           message: "Please check your email and password",
-          field: parsed.error.errors[0].path[0] as 'email' | 'password'
+          field: parsed.error.errors[0]?.path[0] as 'email' | 'password'
         }
       };
     }
@@ -122,7 +122,7 @@ export async function checkAuth() {
     });
 
     return user;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
