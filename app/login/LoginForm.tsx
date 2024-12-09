@@ -51,7 +51,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="bg-white rounded-lg max-w-login-container w-[calc(100%-2rem)] mx-4 p-4 xs:p-6 sm:p-10 flex flex-col items-center border border-bordercolor">
+    <div className="bg-white rounded-lg max-w-login-container w-[calc(100%-2rem)] mx-4 p-4 xs:p-6 sm:p-10 flex flex-col items-center border border-bordercolor animate-fadeIn">
       <Image
         src={logo}
         alt="UD - Logo" 
@@ -74,7 +74,7 @@ export default function LoginPage() {
                 setError({...error, email: false});
               }
             }}
-            className={`w-full px-2 sm:px-3 py-[6px] xs:py-2 sm:py-input-padding font-inter text-[12px] xs:text-[13px] sm:text-[14px] font-normal text-textbase border ${error.email ? 'border-error-ring' : 'border-border-action-normal'} rounded-xl focus:outline-none focus:ring-2 focus:ring-textbase leading-[16px] xs:leading-[18px] sm:leading-[20px] tracking-[-0.07px]`}
+            className={`w-full px-2 sm:px-3 py-[6px] xs:py-2 sm:py-input-padding font-inter text-[12px] xs:text-[13px] sm:text-[14px] font-normal text-textbase border ${error.email ? 'border-error-ring animate-shake' : 'border-border-action-normal'} rounded-xl focus:outline-none focus:ring-2 focus:ring-textbase focus:ring-opacity-50 focus:border-textbase transition-all duration-300 leading-[16px] xs:leading-[18px] sm:leading-[20px] tracking-[-0.07px] hover:border-textbase`}
             required
           />
         </div>
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 setError({...error, password: false});
               }
             }}
-            className={`w-full px-2 sm:px-3 py-[6px] xs:py-2 sm:py-input-padding font-inter text-[12px] xs:text-[13px] sm:text-[14px] font-normal text-textbase border ${error.password ? 'border-error-ring' : 'border-border-action-normal'} rounded-xl focus:outline-none focus:ring-2 focus:ring-textbase leading-[16px] xs:leading-[18px] sm:leading-[20px] tracking-[-0.07px]`}
+            className={`w-full px-2 sm:px-3 py-[6px] xs:py-2 sm:py-input-padding font-inter text-[12px] xs:text-[13px] sm:text-[14px] font-normal text-textbase border ${error.password ? 'border-error-ring animate-shake' : 'border-border-action-normal'} rounded-xl focus:outline-none focus:ring-2 focus:ring-textbase focus:ring-opacity-50 focus:border-textbase transition-all duration-300 leading-[16px] xs:leading-[18px] sm:leading-[20px] tracking-[-0.07px] hover:border-textbase`}
             required
           />
           <Image
@@ -97,14 +97,14 @@ export default function LoginPage() {
             alt="Show password"
             width={18}
             height={18}
-            className="absolute right-2 xs:right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:opacity-80 transition-opacity w-4 h-4 xs:w-[18px] xs:h-[18px]"
+            className="absolute right-2 xs:right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:opacity-80 transition-all duration-300 hover:scale-110 w-4 h-4 xs:w-[18px] xs:h-[18px]"
             onClick={() => setShowPassword(!showPassword)}
           />
         </div>
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-full bg-button-primary text-white py-[6px] xs:py-2 sm:py-input-padding rounded-xl shadow-button hover:bg-button-primary-hover transition-colors text-center font-inter text-[11px] xs:text-xs sm:text-sm font-medium leading-4 xs:leading-5 tracking-[-0.07px] ${
+          className={`w-full bg-button-primary text-white py-[6px] xs:py-2 sm:py-input-padding rounded-xl shadow-button hover:bg-button-primary-hover transition-all duration-300 hover:shadow-lg transform hover:-translate-y-[1px] text-center font-inter text-[11px] xs:text-xs sm:text-sm font-medium leading-4 xs:leading-5 tracking-[-0.07px] ${
             isLoading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
