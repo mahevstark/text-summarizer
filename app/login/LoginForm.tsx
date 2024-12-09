@@ -37,6 +37,7 @@ export default function LoginPage() {
       } else {
         showNotification(NotificationTypes.success, 'success', 'You will be redirected shortly');
         // Redirect after successful login
+        // see why this animation is not included in build
         setTimeout(() => {
           router.replace("/dashboard");
         }, 1500);
