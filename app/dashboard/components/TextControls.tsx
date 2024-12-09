@@ -24,7 +24,7 @@ export default function TextControls({
   onSummarize 
 }: TextControlsProps) {
   return (
-    <div className="bg-box-bg px-5 flex flex-col xs:flex-row justify-between items-center gap-4 xs:gap-0 pt-4">
+    <div className="bg-box-bg px-5 flex flex-col 2md:flex-row justify-between items-center gap-4 2md:gap-0 pt-4">
       <div className="flex flex-row justify-center items-center gap-3">
         <div className="flex flex-row justify-center items-center gap-2">
           <span className="text-textbase3 font-inter text-[14px] font-normal leading-[26px]">Words</span>
