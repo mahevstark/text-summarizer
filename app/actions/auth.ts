@@ -154,7 +154,7 @@ type SignupSuccess = {
   success: true;
 };
 
-type SignupResponse = SignupError | SignupSuccess;
+export type SignupResponse = SignupError | SignupSuccess;
 
 export async function signup(formData: {
   firstName: string,

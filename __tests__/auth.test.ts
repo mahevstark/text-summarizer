@@ -1,4 +1,4 @@
-import { login, checkAuth, logout } from '../app/actions/auth'
+import { login, checkAuth, logout, signup, SignupResponse } from '../app/actions/auth'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
@@ -136,7 +136,7 @@ describe('Database and Auth Tests', () => {
     })
   })
 
-  // Test 4: Check Auth
+  // Test 5: Check Auth
   describe('Check Auth Functionality', () => {
     it('should return null when no token is present', async () => {
       const mockCookies = cookies as jest.Mock
@@ -169,7 +169,41 @@ describe('Database and Auth Tests', () => {
     })
   })
 
-  // Test 5: Logout
+  // Test 4: Signup
+  describe('Signup Functionality', () => {
+    it('should successfully signup with correct credentials', async () => {
+      const responseFailed: SignupResponse = await signup({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john@example.com',
+        password: 'password123',
+        confirmPassword: 'password123'
+      });
+
+      expect(responseFailed).toHaveProperty('error');
+      if ('error' in responseFailed) {
+        expect(responseFailed.error.message).toBe("An account with this email already exists");
+      }
+
+      const responseSuccess: SignupResponse = await signup({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: `john+${Math.random().toString(36).substring(2, 15)}@example.com`,
+        password: 'password123',
+        confirmPassword: 'password123'
+      });
+
+      expect(responseSuccess).toHaveProperty('success');
+      if ('success' in responseSuccess) {
+        expect(responseSuccess.success).toBe(true);
+      }
+
+      const users = await prisma.user.findMany()
+      expect(users).toHaveLength(3)
+    });
+  })
+
+  // Test 6: Logout
   describe('Logout Functionality', () => {
     it('should clear the auth cookie', async () => {
       const mockCookies = cookies as jest.Mock
