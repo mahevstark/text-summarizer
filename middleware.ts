@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Public paths that don't require authentication
-  const isPublicPath = pathname === '/login' || pathname === '/register'
+  const isPublicPath = pathname === '/login' || pathname === '/signup' || pathname === '/register'
 
   if (!token && !isPublicPath) {
     // Redirect to login if trying to access protected route without token
@@ -35,4 +35,4 @@ export const config = {
      */
     '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|public).*)',
   ],
-} 
+}
