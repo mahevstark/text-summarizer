@@ -9,8 +9,9 @@ import Sidebar from './components/sidebar';
 import Header from './components/Header';
 import TextInput from './components/TextInput';
 import SummaryDisplay from './components/SummaryDisplay';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useSummaryStore } from './history/store/summary-store';
+import { getSummaries } from './history/actions/get-summary';
 
 export default function Dashboard() {
   const { 
@@ -24,7 +25,37 @@ export default function Dashboard() {
     reset 
   } = useSummarizerStore();
 
-  const { editingSummary, setEditingSummary } = useSummaryStore();
+  const { 
+    editingSummary, setEditingSummary,
+    selectedDate, searchQuery, selectedPage,
+    isHistoriesLoaded, setSummaries, summaries,
+    setIsLoading, total, setHistoriesLoaded
+  } = useSummaryStore();
+
+  const showNotification = useNotificationStore(state => state.showNotification);
+
+  // Load histories when dashboard mounts
+  const fetchHistories = useCallback(async () => {
+    setIsLoading(true);
+    const result = await getSummaries({
+      page: selectedPage,
+      search: searchQuery,
+      period: selectedDate
+    });
+
+    if (result.error.title !== "") {
+      setIsLoading(false);
+      showNotification('error', result.error.title, result.error.message);
+    } else {
+      setSummaries(result);
+    }
+  }, [selectedPage, searchQuery, selectedDate]);
+
+  useEffect(() => {
+    if(!isHistoriesLoaded){
+      fetchHistories();
+    }
+  }, []);
 
   useEffect(() => {
     if(editingSummary) {
@@ -33,8 +64,6 @@ export default function Dashboard() {
       setInputMode(true)
     }
   }, [editingSummary, setInputMode, setSummary, setText]);
-
-  const showNotification = useNotificationStore(state => state.showNotification);
 
   const handleSummarize = async () => {
     if (!text.trim() || summarizing) return;
@@ -50,6 +79,35 @@ export default function Dashboard() {
     } else {
       setSummary(result.summary);
       showNotification('success', 'Summary generated successfully');
+      
+      // Update the history list
+      if (editingSummary) {
+        // If editing, update the existing summary in the list
+        const updatedSummaries = summaries.map(s => 
+          s.id === editingSummary.id 
+            ? result.savedSummary 
+            : s
+        );
+        setSummaries({
+          summaries: updatedSummaries,
+          total,
+          hasMore: false,
+          error: { title: '', message: '' }
+        });
+      } else if (selectedDate === 'Today') {
+        // If it's a new summary and we're viewing today's summaries,
+        // add it to the beginning of the list
+        setSummaries({
+          summaries: [result.savedSummary, ...summaries].slice(0, 5),
+          total: total + 1,
+          hasMore: total + 1 > 5,
+          error: { title: '', message: '' }
+        });
+      } else {
+        // If we're not viewing today's summaries, mark data as stale
+        // so it will be refetched when user visits the history page
+        setHistoriesLoaded(false);
+      }
     }
     
     setSummarizing(false);

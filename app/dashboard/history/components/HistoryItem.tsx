@@ -46,7 +46,7 @@ export default function HistoryItem({
     }, [isMenuOpen, onMenuToggle]);
 
     return (
-        <div className="flex p-5 items-start gap-[11px] self-stretch rounded-2xl border border-[#DEE0E3] bg-white w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+        <div className="flex p-5 items-start gap-[11px] self-stretch rounded-2xl border border-[#DEE0E3] bg-white w-full hover:shadow-lg transition-all duration-300">
             <div className="flex flex-row items-start justify-between w-full">
                 <div className="flex flex-col flex-1 mr-4">
                     <span className="overflow-hidden text-[#14151A] text-ellipsis font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px] w-full h-[42px] hover:text-purple-accent transition-colors duration-300">
@@ -58,7 +58,7 @@ export default function HistoryItem({
                         characterCount={characterCount}
                     />
                 </div>
-                <div ref={menuRef} className="transition-transform duration-300 hover:scale-105">
+                <div ref={menuRef} className="transition-transform duration-300 ">
                     <HistoryItemMenu
                         isOpen={isMenuOpen}
                         onToggle={onMenuToggle}

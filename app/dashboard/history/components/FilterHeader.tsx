@@ -89,6 +89,7 @@ export default function FilterHeader({ selectedDate, setSelectedDate, searchQuer
                             placeholder:text-[#0F1324]/60
                             focus:outline-none
                             bg-transparent
+                            text-textbase
                         "
                     />
                 </div>
