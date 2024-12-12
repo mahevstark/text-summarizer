@@ -23,52 +23,52 @@ export default function HistoryPage() {
         selectedPage, setSelectedPage,
         summaries, total, isLoading,
         setSummaries, setIsLoading,
-        setEditingSummary, removeSummary
+        setEditingSummary, removeSummary,
+        isHistoriesLoaded
     } = useSummaryStore()
-
 
     const showNotification = useNotificationStore(state => state.showNotification)
     const [menuIndex, setMenuIndex] = useState<number>(-1)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-
     const fetchData = useCallback(async () => {
-        try {
-            setIsLoading(true)
-            const result = await getSummaries({
-                page: selectedPage,
-                search: searchQuery,
-                period: selectedDate
-            })
+        setIsLoading(true)
+        const result = await getSummaries({
+            page: selectedPage,
+            search: searchQuery,
+            period: selectedDate
+        })
 
-            if (result.error.title !== "") {
-                showNotification(NotificationTypes.error, result.error.title, result.error.message)
-            } else {
-                // await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure state updates
-                setSummaries(result)
-            }
-        } finally {
-            // setIsLoading(false)
-        }
-    }, [selectedPage, searchQuery, selectedDate, showNotification, setIsLoading, setSummaries])
-
-    useEffect(() => {
-        if (isLoading) {
+        if (result.error.title !== "") {
             setIsLoading(false)
+            showNotification(NotificationTypes.error, result.error.title, result.error.message)
+        } else {
+            setSummaries(result)
         }
-    }, [summaries])
-    // Debounce search query changes
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchData();
-        }, 500); // Wait 500ms after last keystroke before fetching
+        
+    }, [selectedPage, searchQuery, selectedDate])
 
-        return () => clearTimeout(timer);
+    // Initial load
+    useEffect(() => {
+        if(!isHistoriesLoaded){
+            fetchData();
+        }
+    }, [isHistoriesLoaded, fetchData]);
+
+    // Handle search query changes with debounce
+    useEffect(() => {
+        if (searchQuery) { // Only debounce when there's a search query
+            const timer = setTimeout(() => {
+                fetchData();
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+        return () => {}
     }, [searchQuery, fetchData]);
 
     // Handle other filter changes immediately
     useEffect(() => {
-        if (!searchQuery) { // Don't double fetch when searchQuery changes
+        if (selectedPage !== 1 || selectedDate !== 'Today') {
             fetchData();
         }
     }, [selectedPage, selectedDate, fetchData]);
@@ -152,8 +152,8 @@ export default function HistoryPage() {
         return summaries.map((item, index) => (
             <div
                 key={index}
-                className="animate-slideUpFade"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                // className="animate-slideUpFade"
+                // style={{ animationDelay: `${index * 0.1}s` }}
             >
                 <HistoryItem
                     text={item.userText}
@@ -218,7 +218,6 @@ export default function HistoryPage() {
                                 totalItems={total || 0}
                                 itemsPerPage={5}
                                 onPageChange={(page: number) => {
-                                    console.log("page changed", page);
                                     setSelectedPage(page);
                                 }}
                             />

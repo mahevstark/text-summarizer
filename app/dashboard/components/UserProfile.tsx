@@ -2,37 +2,27 @@
 
 import Image from 'next/image';
 import logoutIcon from '@/public/images/icons/logout.svg';
-import { checkAuth, logout } from '@/app/actions/auth';
+import { logout } from '@/app/actions/auth';
 import { useRouter } from 'next/navigation';
 import { useNotificationStore, NotificationTypes } from '@/app/store/notificationStore';
 import { useEffect } from 'react';
-import { useState } from 'react';
-
-type AuthUser = {
-  email: string;
-  status: string | null;
-  id: number;
-  name: string | null;
-} | null;
+import { useUserStore } from '@/app/store/userStore';
 
 export default function UserProfile() {
   const router = useRouter();
   const { showNotification } = useNotificationStore();
-
-  const [user, setUser] = useState<AuthUser>(null);
+  const { user, fetchUser } = useUserStore();
 
   useEffect(() => {
-    getUser()
-  }, []);
-
-  const getUser = async () => {
-    const user = await checkAuth();
-    setUser(user);
-  }
+    // Only fetch if user is not already loaded
+    if (!user) {
+      fetchUser();
+    }
+  }, [user, fetchUser]);
 
   // Handle long names by taking first letter of first and last names only
   const initials = user?.name
-    ? user.name!.split(' ')
+    ? user.name.split(' ')
       .filter((_, i) => i === 0 || i === user.name!.split(' ').length - 1)
       .map(name => name[0])
       .join('')
@@ -40,6 +30,7 @@ export default function UserProfile() {
 
   const handleLogout = async () => {
     await logout();
+    useUserStore.getState().setUser(null); // Clear user state
     showNotification(NotificationTypes.success, 'Success', 'You have been successfully logged out');
     router.replace('/login');
   };

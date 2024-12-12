@@ -22,28 +22,28 @@ export default function HistoryItemMenu({ isOpen, onToggle, onCopy, onEdit, onDe
                 </svg>
             </button>
 
-            {isOpen && (
-                <div className="absolute top-0 right-0 flex w-[175px] flex-col items-start p-[4px_0px] gap-[0px] rounded-[12px] border border-[#DEE0E3] bg-white shadow-[0px_10px_16px_-3px_rgba(20,21,26,0.08),0px_3px_6px_-2px_rgba(20,21,26,0.05)]">
-                    <button onClick={onCopy} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
-                        <Image src={CopyIcon} alt="Copy" width={20} height={20} />
-                        <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
-                            Copy to Clipboard
-                        </span>
-                    </button>
-                    <button onClick={onEdit} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
-                        <Image src={EditIcon} alt="Edit" width={20} height={20} />
-                        <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
-                            Edit
-                        </span>
-                    </button>
-                    <button onClick={onDelete} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
-                        <Image src={DeleteIcon} alt="Delete" width={20} height={20} />
-                        <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
-                            Delete
-                        </span>
-                    </button>
-                </div>
-            )}
+            <div className={`absolute top-full right-0 mt-2 transform origin-top-right transition-all duration-200 ease-in-out ${
+                isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
+            } z-[999999] flex w-[175px] flex-col items-start p-[4px_0px] gap-[0px] rounded-[12px] border border-[#DEE0E3] bg-white shadow-[0px_10px_16px_-3px_rgba(20,21,26,0.08),0px_3px_6px_-2px_rgba(20,21,26,0.05)]`}>
+                <button onClick={onCopy} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
+                    <Image src={CopyIcon} alt="Copy" width={20} height={20} />
+                    <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
+                        Copy to Clipboard
+                    </span>
+                </button>
+                <button onClick={onEdit} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
+                    <Image src={EditIcon} alt="Edit" width={20} height={20} />
+                    <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
+                        Edit
+                    </span>
+                </button>
+                <button onClick={onDelete} className="w-full flex px-3 py-[6px] items-center gap-[8px] bg-[rgba(255,255,255,0)] hover:bg-[rgba(10,15,41,0.04)]">
+                    <Image src={DeleteIcon} alt="Delete" width={20} height={20} />
+                    <span className="text-[var(--text-base-primary,#14151A)] text-center font-inter text-[14px] font-normal leading-[20px] tracking-[-0.07px]">
+                        Delete
+                    </span>
+                </button>
+            </div>
         </div>
     );
-} 
+}
