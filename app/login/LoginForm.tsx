@@ -60,7 +60,7 @@ export default function LoginPage() {
         className="w-[40px] h-[40px] xs:w-[50px] xs:h-[50px] sm:w-[76px] sm:h-[76px]"
       />
       <h2 className="text-base xs:text-lg sm:text-xl font-medium text-textbase font-inter tracking-heading mt-2 text-center">Log in to Undetectable AI</h2>
-      <p className="text-xs xs:text-sm sm:text-base text-textsecondary font-inter mt-2 tracking-subheading leading-4 xs:leading-5 sm:leading-6 text-center px-2">Enter your username and password to continue</p>
+      <p className="text-xs xs:text-sm sm:text-base text-textsecondary font-inter mt-2 tracking-subheading leading-4 xs:leading-5 sm:leading-6 text-center">Enter your username and password to continue</p>
       
       <form onSubmit={handleSubmit} className="w-full space-y-2 xs:space-y-3 sm:space-y-4 mt-3 xs:mt-4 sm:mt-6">
         <div>
@@ -110,6 +110,13 @@ export default function LoginPage() {
         >
           {isLoading ? 'Logging in...' : 'Log in'}
         </button>
+
+        <p className="text-center text-[11px] xs:text-xs sm:text-sm text-textsecondary font-inter mt-2">
+          Don't have an account?{' '}
+          <a href="/signup" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
+            Sign up
+          </a>
+        </p>
       </form>
     </div>
   );
