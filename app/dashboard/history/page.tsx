@@ -32,7 +32,6 @@ export default function HistoryPage() {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     const fetchData = useCallback(async () => {
-        console.log("feth data 1")
         setIsLoading(true)
         const result = await getSummaries({
             page: selectedPage,
@@ -52,8 +51,6 @@ export default function HistoryPage() {
     // Initial load
     useEffect(() => {
         if(!isHistoriesLoaded){
-            console.log("feth data 2")
-
             fetchData();
         }
     }, [isHistoriesLoaded, fetchData]);
@@ -62,19 +59,16 @@ export default function HistoryPage() {
     useEffect(() => {
         if (searchQuery) { // Only debounce when there's a search query
             const timer = setTimeout(() => {
-                console.log("feth data 3")
-
                 fetchData();
             }, 500);
             return () => clearTimeout(timer);
         }
+        return () => {}
     }, [searchQuery, fetchData]);
 
     // Handle other filter changes immediately
     useEffect(() => {
         if (selectedPage !== 1 || selectedDate !== 'Today') {
-            console.log("feth data 4")
-
             fetchData();
         }
     }, [selectedPage, selectedDate, fetchData]);
@@ -101,14 +95,10 @@ export default function HistoryPage() {
             } else {
                 showNotification(NotificationTypes.error, result.error.title, result.error.message)
                 // Refresh data to restore the deleted item if deletion failed
-                console.log("feth data 6")
-
                 fetchData()
             }
         } catch {
             showNotification(NotificationTypes.error, "Error", "We couldn't complete your request at this moment, please try again later")
-            console.log("feth data 5")
-
             fetchData()
         }
     }
@@ -228,7 +218,6 @@ export default function HistoryPage() {
                                 totalItems={total || 0}
                                 itemsPerPage={5}
                                 onPageChange={(page: number) => {
-                                    console.log("page changed", page);
                                     setSelectedPage(page);
                                 }}
                             />
