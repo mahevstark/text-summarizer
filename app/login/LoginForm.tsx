@@ -112,7 +112,7 @@ export default function LoginPage() {
         </button>
 
         <p className="text-center text-[11px] xs:text-xs sm:text-sm text-textsecondary font-inter mt-2">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <a href="/signup" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
             Sign up
           </a>
