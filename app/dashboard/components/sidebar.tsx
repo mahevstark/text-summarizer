@@ -38,13 +38,14 @@ export default function Sidebar() {
         <div className={`
           fixed
           flex-none
-          h-full
           min-h-screen
-          flex flex-col w-[280px] h-screen bg-textbase text-white
-          rounded-l-ud-radius py-5
+          flex flex-col w-[280px] 
+          h-screen bg-textbase text-white
+           py-5
           transition-transform duration-300 ease-in-out
           ${!isOpen ? '-translate-x-full' : 'translate-x-0'}
           z-40
+          ${!isMobile && 'rounded-l-ud-radius'}
         `}>
           {isMobile && (
             <button 

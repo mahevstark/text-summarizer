@@ -8,6 +8,7 @@ import eyeOpen from "@/public/images/icons/eye-open.svg"
 import eyeClose from "@/public/images/icons/eye-closed.svg"
 import { signup } from '../actions/auth'
 import { useNotificationStore, NotificationTypes } from "../store/notificationStore"
+import Link from 'next/link'
 
 export default function SignupForm() {
   const router = useRouter()
@@ -161,9 +162,9 @@ export default function SignupForm() {
 
         <p className="text-center text-[11px] xs:text-xs sm:text-sm text-textsecondary font-inter mt-2">
           Already have an account?{' '}
-          <a href="/login" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
+          <Link href="/login" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
             Log in
-          </a>
+          </Link>
         </p>
       </form>
     </div>
