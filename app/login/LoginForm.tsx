@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/actions/auth";
 import { useNotificationStore, NotificationTypes } from "../store/notificationStore";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -113,9 +114,9 @@ export default function LoginPage() {
 
         <p className="text-center text-[11px] xs:text-xs sm:text-sm text-textsecondary font-inter mt-2">
           Don&apos;t have an account?{' '}
-          <a href="/signup" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
+          <Link href="/signup" className="text-button-primary hover:text-button-primary-hover transition-all duration-300">
             Sign up
-          </a>
+          </Link>
         </p>
       </form>
     </div>
